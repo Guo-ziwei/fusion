@@ -21,7 +21,7 @@ Clone the repository and catkin_make:
 
 ``` bash
 cd ~/catkin_ws/src
-git clone
+git clone https://github.com/Guo-ziwei/fusion
 cd ../
 catkin_make
 source ~/catkin_ws/devel/setup.bash
@@ -42,6 +42,8 @@ rosrun gtsam_imu imu_preintegrated bag_filename.bag
 ## Performance
 
 Test on [MIt dataset](https://projects.csail.mit.edu/stata/index.php)
+
+<img src="https://github.com/Guo-ziwei/fusion/tree/master/image/result_ekf.png" width = 80% height = 80% />
 
 ## TODO
 
