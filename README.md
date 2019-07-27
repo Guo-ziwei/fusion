@@ -42,8 +42,7 @@ rosrun gtsam_imu imu_preintegrated bag_filename.bag
 ## Performance
 
 Test on [MIt dataset](https://projects.csail.mit.edu/stata/index.php)
-
-<img src="https://github.com/Guo-ziwei/fusion/tree/master/image/result_ekf.png" width = 80% height = 80% />
+<img src="https://github.com/Guo-ziwei/fusion/blob/master/image/result_ekf.png" width = 34% height = 34% div align=center />
 
 ## TODO
 
