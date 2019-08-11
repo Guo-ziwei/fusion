@@ -54,16 +54,16 @@ int main(int argc, char const *argv[])
   graph.emplace_shared<PriorFactor<imuBias::ConstantBias>>(B(correction_count), prior_imu_bias,bias_noise_model);
 
   // We use the sensor specs to build the noise model for the IMU factor.
-  double accel_noise_sigma = 0.0979;
-  double gyro_noise_sigma = 0.0012056;
-  double accel_bias_rw_sigma = 0.04905;
-  double gyro_bias_rw_sigma = 0.0001454441043;
+  double accel_noise_sigma = 0.0980;
+  double gyro_noise_sigma = 0.0013;
+  // double accel_bias_rw_sigma = 0.055;
+  // double gyro_bias_rw_sigma = 0.00015;
   Matrix33 measured_acc_cov = Matrix33::Identity(3,3) * pow(accel_noise_sigma,2);
   Matrix33 measured_omega_cov = Matrix33::Identity(3,3) * pow(gyro_noise_sigma,2);
   Matrix33 integration_error_cov = Matrix33::Identity(3,3)*1e-8; // error committed in integrating position from velocities
-  Matrix33 bias_acc_cov = Matrix33::Identity(3,3) * pow(accel_bias_rw_sigma,2);
-  Matrix33 bias_omega_cov = Matrix33::Identity(3,3) * pow(gyro_bias_rw_sigma,2);
-  Matrix66 bias_acc_omega_int = Matrix::Identity(6,6)*1e-5; // error in the bias used for preintegration
+  // Matrix33 bias_acc_cov = Matrix33::Identity(3,3) * pow(accel_bias_rw_sigma,2);
+  // Matrix33 bias_omega_cov = Matrix33::Identity(3,3) * pow(gyro_bias_rw_sigma,2);
+  // Matrix66 bias_acc_omega_int = Matrix::Identity(6,6)*1e-5; // error in the bias used for preintegration
 
   boost::shared_ptr<PreintegratedImuMeasurements::Params> p = PreintegratedImuMeasurements::Params::MakeSharedU();
   // PreintegrationBase params:
@@ -121,6 +121,14 @@ int main(int argc, char const *argv[])
     prev_bias = result.at<imuBias::ConstantBias>(B(correction_count));
     // Reset the preintegration object.
     imu_preintegrated_->resetIntegrationAndSetBias(prev_bias);
+    graph.resize(0);
+    initial_values.clear();
+    initial_values.insert(X(correction_count), prev_state.pose());
+    initial_values.insert(V(correction_count), prev_state.v());
+    initial_values.insert(B(correction_count), prev_bias);
+    graph.emplace_shared<PriorFactor<Pose3>>(X(correction_count), prev_state.pose(), pose_noise_model);
+    graph.emplace_shared<PriorFactor<Vector3>>(V(correction_count), prev_state.v(),velocity_noise_model);
+    graph.emplace_shared<PriorFactor<imuBias::ConstantBias>>(B(correction_count), prev_bias,bias_noise_model);
     // Print out the position and orientation.
     Vector3 gtsam_position = prev_state.pose().translation();
     Quaternion gtsam_quat = prev_state.pose().rotation().toQuaternion();

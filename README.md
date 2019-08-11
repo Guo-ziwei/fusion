@@ -2,7 +2,7 @@
 
 This is a demo fusing IMU data and Odometry data (wheel odom or Lidar odom) or GPS data to obtain better odometry.
 
-Currently, I implement Extended Kalman Filter (EKF) and isam2 to fuse IMU and Odometry data.
+Currently, I implement Extended Kalman Filter (EKF), batch optimization and isam2 to fuse IMU and Odometry data.
 
 ## Dependencies
 
@@ -33,10 +33,18 @@ run EKF:
 rosrun ekf_fusion ekf_fusion_node bag_filename.bag
 ```
 
-run isam2:
+run batch:
 
 ``` bash
 rosrun gtsam_imu imu_preintegrated bag_filename.bag
+```
+
+it will take a long time to get the result and I will fix it in the future
+
+run isam2:
+
+``` bash
+rosrun gtsam_imu imu_preintegrated_sm bag_filename.bag
 ```
 
 ## Performance
