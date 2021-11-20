@@ -43,9 +43,9 @@ public:
   T& y()           { return (*this) [Y];}
   T& z()           { return (*this) [Z];}
   T& qx()          { return (*this) [Q_X];}
-  T& qy()          { return (*this) [Q_X];}
-  T& qz()          { return (*this) [Q_X];}
-  T& qw()          { return (*this) [Q_X];}
+  T& qy()          { return (*this) [Q_Y];}
+  T& qz()          { return (*this) [Q_Z];}
+  T& qw()          { return (*this) [Q_W];}
   T& vx()           { return (*this) [V_X];}
   T& vy()           { return (*this) [V_Y];}
   T& vz()           { return (*this) [V_Z];}
