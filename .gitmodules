@@ -1,0 +1,3 @@
+[submodule "ekf_fusion/include/thirdparty/kalman"]
+	path = ekf_fusion/include/thirdparty/kalman
+	url = https://github.com/mherb/kalman.git

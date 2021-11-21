@@ -5,12 +5,12 @@ project(ekf_fusion)
 add_compile_options(-std=c++11)
 set(CMAKE_CXX_FLAGS "${KALMAN_CXX_FLAGS} -Wall -pedantic -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG")
-set(Eigen3_INCLUDE_DIR /usr/include/eigen3)
+# set(Eigen3_INCLUDE_DIR /usr/include/eigen3)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rosbag)
 find_package(Eigen3 REQUIRED)
+find_package(catkin REQUIRED COMPONENTS roscpp rosbag)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -114,8 +114,8 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 include
+${EIGEN3_INCLUDE_DIR}
 ${catkin_INCLUDE_DIRS}
-${Eigen3_INCLUDE_DIR}
 )
 
 ## Declare a C++ library

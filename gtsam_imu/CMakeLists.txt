@@ -24,6 +24,7 @@ include_directories(
 
 add_executable(imu_preintegrated src/imu_preint.cpp)
 add_executable(imu_preintegrated_sm src/imu_preint_sm.cpp)
+add_executable(robustestimator src/Mestimators.cpp)
 
 add_dependencies(imu_preintegrated ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(imu_preintegrated
@@ -32,5 +33,10 @@ target_link_libraries(imu_preintegrated
 
 add_dependencies(imu_preintegrated_sm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(imu_preintegrated_sm
+  ${catkin_LIBRARIES} gtsam
+)
+
+add_dependencies(robustestimator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(robustestimator
   ${catkin_LIBRARIES} gtsam
 )
