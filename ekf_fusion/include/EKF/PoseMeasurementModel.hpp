@@ -42,27 +42,13 @@ class PoseMeasurement : public Kalman::Vector<T, 7> {
         return (*this)[Q_W];
     }
 
-    T& x() {
-        return (*this)[X];
-    }
-    T& y() {
-        return (*this)[Y];
-    }
-    T& z() {
-        return (*this)[Z];
-    }
-    T& qx() {
-        return (*this)[Q_X];
-    }
-    T& qy() {
-        return (*this)[Q_X];
-    }
-    T& qz() {
-        return (*this)[Q_X];
-    }
-    T& qw() {
-        return (*this)[Q_X];
-    }
+  T& x()           { return (*this) [X];}
+  T& y()           { return (*this) [Y];}
+  T& z()           { return (*this) [Z];}
+  T& qx()          { return (*this) [Q_X];}
+  T& qy()          { return (*this) [Q_Y];}
+  T& qz()          { return (*this) [Q_Z];}
+  T& qw()          { return (*this) [Q_W];}
 };
 
 template <typename T, template <class> class CovarianceBase = Kalman::StandardBase>
