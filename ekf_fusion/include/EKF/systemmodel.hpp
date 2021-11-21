@@ -28,16 +28,67 @@ class State : public Kalman::Vector<T, 10> {
     static constexpr size_t V_Y = 8;
     static constexpr size_t V_Z = 9;
 
-  T& x()           { return (*this) [X];}
-  T& y()           { return (*this) [Y];}
-  T& z()           { return (*this) [Z];}
-  T& qx()          { return (*this) [Q_X];}
-  T& qy()          { return (*this) [Q_Y];}
-  T& qz()          { return (*this) [Q_Z];}
-  T& qw()          { return (*this) [Q_W];}
-  T& vx()           { return (*this) [V_X];}
-  T& vy()           { return (*this) [V_Y];}
-  T& vz()           { return (*this) [V_Z];}
+    T x() const {
+        return (*this)[X];
+    }
+    T y() const {
+        return (*this)[Y];
+    }
+    T z() const {
+        return (*this)[Z];
+    }
+    T qx() const {
+        return (*this)[Q_X];
+    }
+    T qy() const {
+        return (*this)[Q_Y];
+    }
+    T qz() const {
+        return (*this)[Q_Z];
+    }
+    T qw() const {
+        return (*this)[Q_W];
+    }
+    T vx() const {
+        return (*this)[V_X];
+    }
+    T vy() const {
+        return (*this)[V_Y];
+    }
+    T vz() const {
+        return (*this)[V_Z];
+    }
+
+    T& x() {
+        return (*this)[X];
+    }
+    T& y() {
+        return (*this)[Y];
+    }
+    T& z() {
+        return (*this)[Z];
+    }
+    T& qx() {
+        return (*this)[Q_X];
+    }
+    T& qy() {
+        return (*this)[Q_Y];
+    }
+    T& qz() {
+        return (*this)[Q_Z];
+    }
+    T& qw() {
+        return (*this)[Q_W];
+    }
+    T& vx() {
+        return (*this)[V_X];
+    }
+    T& vy() {
+        return (*this)[V_Y];
+    }
+    T& vz() {
+        return (*this)[V_Z];
+    }
 };
 
 template <typename T>
