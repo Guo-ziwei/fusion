@@ -12,6 +12,7 @@
 #include <string>
 
 using namespace gtsam;
+using namespace std;
 
 #define LINESIZE 81920
 
@@ -142,8 +143,7 @@ void write3DG2o(const NonlinearFactorGraph& graph, const Values& estimate, const
 int main(int argc, char const* argv[]) {
     int max_iterations = 100;
     std::string g2ofile(argv[1]);
-std:;
-    string outfile(argv[2]);
+    std::string outfile(argv[2]);
     std::cout << "read file " << g2ofile << std::endl;
     bool userobustmodel = true;
     auto prior_model = noiseModel::Diagonal::Variances((Vector(6) << 1e-6, 1e-6, 1e-6, 1e-4, 1e-4, 1e-4).finished());
