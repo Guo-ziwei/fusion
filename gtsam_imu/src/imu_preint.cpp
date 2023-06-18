@@ -7,7 +7,7 @@
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
 #include <gtsam/inference/Symbol.h>
 
-#include <gtsam_imu/utilities.h>
+#include "gtsam_imu/utilities.h"
 
 using namespace gtsam;
 

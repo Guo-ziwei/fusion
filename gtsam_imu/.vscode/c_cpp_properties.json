@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/include/",
                 "/usr/include/**",
-                "/opt/ros/kinetic/include/",
+                "/opt/ros/noetic/include/",
                 "/usr/include/eigen3"
             ],
             "defines": [],

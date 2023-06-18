@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>gtsam_imu</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>The gtsam_imu package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -34,7 +34,9 @@
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
   <!--   <depend>roscpp</depend> -->
   <!--   Note that this is equivalent to the following: -->
-  <!--   <build_depend>roscpp</build_depend> -->
+    <build_depend>roscpp</build_depend>
+    <build_depend>gtsam</build_depend>
+    <build_depend>gtsam_unstable</build_depend>
   <!--   <exec_depend>roscpp</exec_depend> -->
   <!-- Use build_depend for packages you need at compile time: -->
   <!--   <build_depend>message_generation</build_depend> -->

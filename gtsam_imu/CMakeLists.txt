@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 project(gtsam_imu)
 
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 find_package(catkin REQUIRED COMPONENTS roscpp rosbag)
 
@@ -40,3 +40,12 @@ add_dependencies(robustestimator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 target_link_libraries(robustestimator
   ${catkin_LIBRARIES} gtsam
 )
+
+add_executable(IMURTK src/imu_preint.cpp)
+add_dependencies(IMURTK ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(IMURTK ${catkin_LIBRARIES} gtsam)
+
+
+add_executable(IMURTKfixlag src/imu_RTK_fixlag.cpp)
+add_dependencies(IMURTKfixlag ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(IMURTKfixlag ${catkin_LIBRARIES} gtsam gtsam_unstable)

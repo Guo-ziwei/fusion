@@ -12,6 +12,7 @@ This demo has the following dependencies:
   * I test it on ROS melodic and kinetic version
 
 * [GTSAM](https://bitbucket.org/gtborg/gtsam/src/develop/)
+  * use tag 4.28a now
 
 * [Kalman Filter Library](https://github.com/mherb/kalman)
 
