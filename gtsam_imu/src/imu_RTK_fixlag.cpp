@@ -32,8 +32,7 @@ boost::shared_ptr<PreintegratedImuMeasurements::Params> imuParams() {
     double gyro_bias_rw_sigma = 0.0001;
     Matrix33 measured_acc_cov = I_3x3 * pow(accel_noise_sigma, 2);
     Matrix33 measured_omega_cov = I_3x3 * pow(gyro_noise_sigma, 2);
-    Matrix33 integration_error_cov =
-        I_3x3 * 1e-6;  // error committed in integrating position from velocities
+    Matrix33 integration_error_cov = I_3x3 * 1e-6;  // error committed in integrating position from velocities
     Matrix33 bias_acc_cov = I_3x3 * pow(accel_bias_rw_sigma, 2);
     Matrix33 bias_omega_cov = I_3x3 * pow(gyro_bias_rw_sigma, 2);
     Matrix66 bias_acc_omega_init = I_6x6 * 1e-5;  // error in the bias used for preintegration
@@ -54,13 +53,7 @@ boost::shared_ptr<PreintegratedImuMeasurements::Params> imuParams() {
 }
 
 int main(int argc, char const* argv[]) {
-    string imufile{
-        "/run/user/1000/gvfs/sftp:host=10.10.42.90/home/guozw/testdata/dm-vio/DVT-0026/"
-        "inter_imu.txt"},
-        rtkfile{
-            "/run/user/1000/gvfs/sftp:host=10.10.42.90/home/guozw/testdata/dm-vio/DVT-0026/"
-            "gps.txt"},
-        output_file;
+    string imufile{argv[1]}, rtkfile{argv[2]};
     vector<ImuData> imudata;
     vector<RTKData> rtkdata;
     multimap<double, std::pair<uint64_t, SensorType>> allsensortime;
@@ -83,10 +76,9 @@ int main(int argc, char const* argv[]) {
     initial_values.insert(V(correction_count), prior_velocity);
     initial_values.insert(B(correction_count), prior_imu_bias);
 
-    auto pose_noise_model =
-        noiseModel::Diagonal::Sigmas((Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.5))
-                                         .finished());                 // rad,rad,rad,m, m, m
-    auto velocity_noise_model = noiseModel::Isotropic::Sigma(3, 0.1);  // m/s
+    auto pose_noise_model = noiseModel::Diagonal::Sigmas(
+        (Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.5)).finished());  // rad,rad,rad,m, m, m
+    auto velocity_noise_model = noiseModel::Isotropic::Sigma(3, 0.1);               // m/s
     auto bias_noise_model = noiseModel::Isotropic::Sigma(6, 1e-3);
 
     // Add all prior factors (pose, velocity, bias) to the graph.
@@ -116,16 +108,14 @@ int main(int argc, char const* argv[]) {
                 if (sensor_index->second.first == 0) {
                     break;
                 }
-                double dt = imudata[sensor_index->second.first].timestamp -
-                            imudata[sensor_index->second.first - 1].timestamp;
+                double dt =
+                    imudata[sensor_index->second.first].timestamp - imudata[sensor_index->second.first - 1].timestamp;
                 preintegrated->integrateMeasurement(
                     Vector3(
-                        imudata[sensor_index->second.first].ax,
-                        imudata[sensor_index->second.first].ay,
+                        imudata[sensor_index->second.first].ax, imudata[sensor_index->second.first].ay,
                         imudata[sensor_index->second.first].az),
                     Vector3(
-                        imudata[sensor_index->second.first].gx,
-                        imudata[sensor_index->second.first].gy,
+                        imudata[sensor_index->second.first].gx, imudata[sensor_index->second.first].gy,
                         imudata[sensor_index->second.first].gz),
                     dt);
                 break;
@@ -140,22 +130,20 @@ int main(int argc, char const* argv[]) {
                 auto preint_imu = dynamic_cast<const PreintegratedImuMeasurements&>(*preintegrated);
                 prop_state = preintegrated->predict(prev_state, prev_bias);
                 ImuFactor imu_factor(
-                    X(correction_count - 1), V(correction_count - 1), X(correction_count),
-                    V(correction_count), B(correction_count - 1), preint_imu);
+                    X(correction_count - 1), V(correction_count - 1), X(correction_count), V(correction_count),
+                    B(correction_count - 1), preint_imu);
                 graph->add(imu_factor);
-                Point3 rtk_measurement =
-                    prop_state.attitude() * p_G_I + Point3(
-                                                        rtkdata[sensor_index->second.first].x,
-                                                        rtkdata[sensor_index->second.first].y,
-                                                        rtkdata[sensor_index->second.first].z);
+                Point3 rtk_measurement = prop_state.attitude() * p_G_I + Point3(
+                                                                             rtkdata[sensor_index->second.first].x,
+                                                                             rtkdata[sensor_index->second.first].y,
+                                                                             rtkdata[sensor_index->second.first].z);
                 imuBias::ConstantBias zero_bias(Vector3(0, 0, 0), Vector3(0, 0, 0));
                 graph->add(BetweenFactor<imuBias::ConstantBias>(
                     B(correction_count - 1), B(correction_count), zero_bias, bias_noise_model));
                 GPSFactor gps_factor(
                     X(correction_count), rtk_measurement,
                     noiseModel::Diagonal::Sigmas(Vector3(
-                        rtkdata[sensor_index->second.first].cov_x,
-                        rtkdata[sensor_index->second.first].cov_y,
+                        rtkdata[sensor_index->second.first].cov_x, rtkdata[sensor_index->second.first].cov_y,
                         rtkdata[sensor_index->second.first].cov_z)));
                 graph->add(gps_factor);
 
@@ -175,8 +163,7 @@ int main(int argc, char const* argv[]) {
                 Values result = smootherBatch.calculateEstimate();
                 Pose3 current_pose = result.at<Pose3>(X(correction_count));
                 Vector3 current_velocity = result.at<Vector3>(V(correction_count));
-                prev_state = NavState(
-                    result.at<Pose3>(X(correction_count)), result.at<Vector3>(V(correction_count)));
+                prev_state = NavState(result.at<Pose3>(X(correction_count)), result.at<Vector3>(V(correction_count)));
                 prev_bias = result.at<imuBias::ConstantBias>(B(correction_count));
                 // Reset the preintegration object.
                 preintegrated->resetIntegrationAndSetBias(prev_bias);
